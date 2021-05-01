@@ -38,9 +38,18 @@ public:
 private:
     void recreate(int rows, int cols, int type)
     {
-        // NB: contents not preserved
-        allocated_memory.create(rows, cols, type);
-        valid_rect = cv::Rect(0, 0, cols, rows);
+        try {
+            // NB: contents not preserved
+            allocated_memory.create(rows, cols, type);
+            valid_rect = cv::Rect(0, 0, cols, rows);
+        }
+        catch (const cv::Exception& e) {
+            if (e.code == cv::Error::StsNoMem) {
+                allocated_memory = cv::Mat();
+                valid_rect = cv::Rect();
+            }
+            throw;
+        }
     }
 
     cv::Mat allocated_memory;
