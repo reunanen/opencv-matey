@@ -35,6 +35,12 @@ public:
         return allocated_memory(valid_rect);
     }
 
+    void reset()
+    {
+        allocated_memory = cv::Mat();
+        valid_rect = cv::Rect();
+    }
+
 private:
     void recreate(int rows, int cols, int type)
     {
@@ -45,8 +51,7 @@ private:
         }
         catch (const cv::Exception& e) {
             if (e.code == cv::Error::StsNoMem) {
-                allocated_memory = cv::Mat();
-                valid_rect = cv::Rect();
+                reset();
             }
             throw;
         }
