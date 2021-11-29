@@ -46,7 +46,11 @@ private:
     {
         try {
             // NB: contents not preserved
-            allocated_memory.create(rows, cols, type);
+            allocated_memory.create(
+                std::max(rows, allocated_memory.rows),
+                std::max(cols, allocated_memory.cols),
+                type
+            );
             valid_rect = cv::Rect(0, 0, cols, rows);
         }
         catch (const cv::Exception& e) {
